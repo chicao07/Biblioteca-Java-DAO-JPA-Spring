@@ -1,0 +1,17 @@
+# Build
+target/
+
+# Eclipse
+.classpath
+.project
+.settings/
+
+# Configurações sensíveis (contêm senha real do banco)
+src/main/resources/database.properties
+src/main/resources/application.properties
+src/main/resources/META-INF/persistence.xml
+src/test/resources/database.properties
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
