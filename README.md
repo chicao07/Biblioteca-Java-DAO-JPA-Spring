@@ -10,7 +10,7 @@ testada e documentada antes de avançar para a próxima, com foco em entender
 Construir uma aplicação de gerenciamento de livros e autores, passando por
 praticamente todo o ecossistema padrão de um backend Java moderno:
 
-JBDC puro -> DAO -> Services -> Testes -> ORM(JPA/Hibernate) -> Spring Boot -> API REST
+JBDC puro → DAO → Services → Testes → ORM(JPA/Hibernate) → Spring Boot → API REST
 
 
 ## 🛠️ Tecnologias utilizadas
@@ -50,29 +50,30 @@ Cada fase pode ser conferida isoladamente no histórico de commits do projeto,
 com mensagens detalhando o que foi implementado e por quê.
 
 ## 📂 Estrutura do projeto
+```
 src/main/java
-|── 📁 model → Entidades JPA (Autor, Livro)
-|── 📁 dao → Implementações JDBC e JPA do padrão DAO (fase de estudo)
-|── 📁 repository → Spring Data JPA (JpaRepository)
-|── 📁 service → Camada de serviço manual (DAO + DI manual)
-|── 📁 serviceSpring → Camada de serviço gerenciada pelo Spring (@Service)
-|── 📁 controller → API REST (@RestController)
-|── 📁 validator → Validações manuais (fase pré-Spring)
-|── 📁 exception → Exceções customizadas
-|── 📁 connection → ConnectionFactory (JDBC+HikariCP) e JPAUtil (JPA)
-|── 📁 ProjetoDAO.ppoo → Classes de entrada (Main.java, BibliotecaApplication.java)
+├── 📁 model → Entidades JPA (Autor, Livro)
+├── 📁 dao → Implementações JDBC e JPA do padrão DAO (fase de estudo)
+├── 📁 repository → Spring Data JPA (JpaRepository)
+├── 📁 service → Camada de serviço manual (DAO + DI manual)
+├── 📁 serviceSpring → Camada de serviço gerenciada pelo Spring (@Service)
+├── 📁 controller → API REST (@RestController)
+├── 📁 validator → Validações manuais (fase pré-Spring)
+├── 📁 exception → Exceções customizadas
+├── 📁 connection → ConnectionFactory (JDBC+HikariCP) e JPAUtil (JPA)
+└── 📁 ProjetoDAO.ppoo → Classes de entrada (Main.java, BibliotecaApplication.java)
 
 src/main/resources
-|── 📄 application.properties.example → Molde de configuração Spring Boot
-|── 📄 database.properties.example → Molde de configuração JDBC
-|── 📄 log4j2.xml → Configuração de logging
-|── 📁 META-INF/persistence.xml.example → Molde de configuração JPA
+├── 📄 application.properties.example → Molde de configuração Spring Boot
+├── 📄 database.properties.example → Molde de configuração JDBC
+├── 📄 log4j2.xml → Configuração de logging
+└── 📁 META-INF/persistence.xml.example → Molde de configuração JPA
 
 src/test/java
-|── 📁 validator → Testes de validação
-|── 📁 dao → Testes de integração com banco real
-|── 📁 service → Testes com Mockito
-
+├── 📁 validator → Testes de validação
+├── 📁 dao → Testes de integração com banco real
+└── 📁 service → Testes com Mockito
+```
 
 > **Nota:** o projeto mantém, deliberadamente, camadas paralelas de DAO/Service
 > em JDBC puro e em JPA/Spring — isso foi intencional, para fins de comparação
@@ -112,8 +113,8 @@ cp src/main/resources/META-INF/persistence.xml.example src/main/resources/META-I
 Edite cada um desses arquivos, substituindo sua_senha_aqui pela senha real do seu MySQL.
 
 ### 4. Rode a aplicação
-- Via Eclipse: botão direito em BibliotecaApplication.java → Run As → Java Application
-- Via Maven: mvn spring-boot:run
+- Via Eclipse: botão direito em `BibliotecaApplication.java` → Run As → Java Application
+- Via Maven: `mvn spring-boot:run`
 
 A API sobe em `http://localhost:8080.`
 
@@ -137,12 +138,13 @@ mvn test
 
 #### Livros
 
-| **Método** | **Rota**	| **Descrição** |
-| GET	| `/livros	Lista` | todos os livros |
-| GET	| `/livros/{id}`	| Busca livro por id |
-| POST	| `/livros`	| Cria um novo livro |
-| PUT	| `/livros/{id}`	| Atualiza um livro |
-| DELETE	| `/livros/{id}`	| Remove um livro |
+|**Método** | **Rota**	| **Descrição**|
+|-----------|-----------|--------------|
+| GET	| `/livros` |	Lista todos os livros |
+| GET	| `/livros/{id}` | Busca livro por id |
+| POST | `/livros` | Cria um novo livro |
+| PUT	| `/livros/{id}` | Atualiza um livro |
+| DELETE	| `/livros/{id}` | Remove um livro |
 
 #### Exemplo de requisição (POST /livros)
 
@@ -184,7 +186,7 @@ substituição de new Objeto() manual por beans gerenciados pelo container.
 tratamento global de exceções com @RestControllerAdvice.
 
 ### 🚧 Próximos passos (em estudo)
-- [ ]Tratamento de erros mais granular (exceções customizadas também na camada REST)
+- [ ] Tratamento de erros mais granular (exceções customizadas também na camada REST)
 - [ ] DTOs para desacoplar API da estrutura interna das entidades
 - [ ] Documentação automática com Swagger/OpenAPI
 - [ ] Testes da camada REST com @WebMvcTest + MockMvc
