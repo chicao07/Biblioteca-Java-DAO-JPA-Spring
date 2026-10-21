@@ -14,4 +14,5 @@ src/test/resources/database.properties
 
 # Sistema operacional
 .DS_Store
-Thumbs.dbbin/
+Thumbs.db
+bin/
