@@ -1,6 +1,6 @@
 package serviceSpring;
 
-import model.Autor;
+import exception.LivroNaoEncontradoException;
 import model.Livro;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,7 +23,7 @@ public class LivroServiceSpring {
 	}
 	
 	public Livro buscarPorId(int id) {
-		return livroRepository.findById(id).orElseThrow(() -> new RuntimeException("Livro não encontrado com id: " + id));
+		return livroRepository.findById(id).orElseThrow(() -> new LivroNaoEncontradoException(id));
 	}
 	
 	public List<Livro> listarTodos() {

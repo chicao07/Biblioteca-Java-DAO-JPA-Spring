@@ -1,8 +1,12 @@
 package ProjetoDAO.ppoo;
 
+import exception.AutorNaoEncontradoException;
 import exception.LivroNaoEncontradoException;
 import exception.ValidacaoException;
+import model.Autor;
 import model.Livro;
+import service.AutorService;
+import service.AutorServiceImpl;
 import service.LivroService;
 import service.LivroServiceImpl;
 
@@ -13,6 +17,7 @@ public class Main {
 
     private static Scanner scanner = new Scanner(System.in);
     private static LivroService livroService = new LivroServiceImpl();
+    private static AutorService autorService = new AutorServiceImpl();
 
     public static void main(String[] args) {
 
@@ -45,7 +50,7 @@ public class Main {
                     System.out.println("❌ Opção inválida! Tente novamente.");
             }
 
-            System.out.println(); // linha em branco para organizar
+            System.out.println();
 
         } while (opcao != 6);
 
@@ -65,10 +70,9 @@ public class Main {
 
     private static int lerOpcao() {
         try {
-            int opcao = Integer.parseInt(scanner.nextLine());
-            return opcao;
+            return Integer.parseInt(scanner.nextLine());
         } catch (NumberFormatException e) {
-            return -1; // opção inválida, vai cair no "default" do switch
+            return -1;
         }
     }
 
@@ -78,8 +82,8 @@ public class Main {
         System.out.print("Título: ");
         String titulo = scanner.nextLine();
 
-        System.out.print("Autor: ");
-        String autor = scanner.nextLine();
+        Autor autor = selecionarAutor();
+        if (autor == null) return; // autor não encontrado, aborta o cadastro
 
         System.out.print("Preço: ");
         double preco = Double.parseDouble(scanner.nextLine());
@@ -93,6 +97,40 @@ public class Main {
             System.out.println("✅ Livro cadastrado com sucesso!");
         } catch (ValidacaoException e) {
             System.out.println("❌ Erro de validação: " + e.getMessage());
+        }
+    }
+
+    // Método auxiliar: pede o ID do autor e busca o objeto correspondente
+    private static Autor selecionarAutor() {
+        System.out.print("ID do autor (digite 2 para listar autores cadastrados): ");
+        String entrada = scanner.nextLine();
+
+        if (entrada.equals("2")) {
+            listarAutores();
+            System.out.print("Agora digite o ID do autor desejado: ");
+            entrada = scanner.nextLine();
+        }
+
+        try {
+            int autorId = Integer.parseInt(entrada);
+            return autorService.buscarPorId(autorId);
+        } catch (NumberFormatException e) {
+            System.out.println("❌ ID inválido.");
+            return null;
+        } catch (AutorNaoEncontradoException e) {
+            System.out.println("❌ " + e.getMessage());
+            return null;
+        }
+    }
+
+    private static void listarAutores() {
+        List<Autor> autores = autorService.listarTodos();
+        if (autores.isEmpty()) {
+            System.out.println("📭 Nenhum autor cadastrado ainda.");
+        } else {
+            for (Autor a : autores) {
+                System.out.println(a);
+            }
         }
     }
 
@@ -134,8 +172,11 @@ public class Main {
             System.out.print("Novo título (atual: " + livro.getTitulo() + "): ");
             livro.setTitulo(scanner.nextLine());
 
-            System.out.print("Novo autor (atual: " + livro.getAutor() + "): ");
-            livro.setAutor(scanner.nextLine());
+            System.out.println("Autor atual: " + livro.getAutor());
+            Autor novoAutor = selecionarAutor();
+            if (novoAutor != null) {
+                livro.setAutor(novoAutor);
+            }
 
             System.out.print("Novo preço (atual: " + livro.getPreco() + "): ");
             livro.setPreco(Double.parseDouble(scanner.nextLine()));

@@ -1,5 +1,6 @@
 package serviceSpring;
 
+import exception.AutorNaoEncontradoException;
 import model.Autor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +23,7 @@ public class AutorServiceSpring {
 	}
 	
 	public Autor buscarPorId(int id) {
-		return autorRepository.findById(id).orElseThrow(() -> new RuntimeException("Autor não encontrado com id: " + id));
+		return autorRepository.findById(id).orElseThrow(() -> new AutorNaoEncontradoException(id));
 	}
 	
 	public List<Autor> listarTodos() {
